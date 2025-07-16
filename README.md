@@ -1,4 +1,4 @@
-# Web Gallery: Deployment
+# Web Gallery: Managing Users
 
 The objective of these assignments is to build an application called _The Web Gallery_ where users can share pictures and comments. This application is similar to existing web applications such as Facebook, Instagram or Google Photos.
 
@@ -6,33 +6,93 @@ In this last assignment, you will concentrate on user authentication, and author
 
 ## Instructions
 
-Copy your assignment 3 code into this repository. You will also need to fix all issues that were found in previous assignments.
+> [!CAUTION]
+> Github Copilot may be used in this assignment. However, if you decide to use prompt engineering to generate code using Github Copilot Chat, you must CLEARLY indicate the prompt you used and the generated code in the comments directly preceeding the code. No other AI tool is allowed.
+
+For this assignment, you should use the packages that were introduced in the labs. No other packages are allowed unless explicitly mentioned otherwise.
+
+Make sure that all of these required packages are recorded in the `package.json` file. When the TA is marking your assignment, they will clone your repository into a new directory and run `npm install` to install all the packages. If your code does not work in this way, you will receive a **0**.
+
+> [!IMPORTANT]
+> A `.github/workflows/express.yml` file is provided to help you sanity check that the server can be run on a fresh install. At least ensure that the CI passes before submitting your assignment.
+
+### Code quality and organization
+
+All of your work should be well organized. This directory should be organized as follows:
+
+- `app.js`: the app entrypoint
+- `static/`: your frontend developed for assignment 1 (HTML, CSS, Javascript and UI media files)
+- `routers/`: the routers for the different resources
+- `models/`: the models for the different resources
+- `package.json` and `package-lock.json`: the Node.js package file
+- `uploads/`: the uploaded files
+- `.gitignore`: list of files that should not be committed to github
+
+Your code must be of good quality and follow all guidelines given during lectures, labs, and the previous assignment. Remember, any code found online and improperly credited can constitute an academic violation.
 
 ### Submission
 
 You should submit your work to your Github course repository and Gradescope.
 
-You must include a url.txt which contains the URL of your deployed application. The URL should be accessible to the TAs and markers.
+Before submitting your final version. It is strongly recommended verifying that your code is portable. To do so:
 
-## Deployment Requirements
+- push your work to Github
+- clone it into a new directory
+- install all packages with the single command `npm install` that will install all packages found in the `package.json` file
+- start the app with the command `node app.js`
 
-- Your assignment 3 must be deployed on a DigitalOcean droplet. (This is provided by the University.)
-- Your deployed URL must be a subdomain of `webgallery.<any domain you own>`. You may get a free domain through Github Student Developer Pack or use a domain you already own.
-- The deployed application must be accessible via HTTPS.
-- The deployed application must be running on port 443.
-- The assignment must be feature complete.
+> [!WARNING]
+> As mentioned in the first lecture, if your code does not work like the above, you will automatically receive a **0**.
+
+## Multiple Galleries and Multiple Users
+
+In this part, you are going to extend your API to support authenticated users and multiple galleries. Each user will now have his/her own gallery. All previous rules for 1 gallery applies.
+
+## Authentication (up to 25 points)
+
+Users should be able to sign-up, sign-in and sign-out and no longer need to enter a username when adding images and comments.
+
+You may choose to implement authentication using only 1 of the following approaches:
+
+- Session cookies approach as shown in lab (max 20 points)
+- Access token / Bearer token approach (max 25 points)
+
+You will be graded on the security of your authentication implementation.
+
+## Authorization Policies (25 points)
+
+You must implement the following authorization policies:
+
+- Unauthenticated users can view all galleries, but cannot view any comments
+- Authenticated users can sign-out of the application
+- Authenticated users can browse any gallery and its comments
+- Gallery owners can upload and delete pictures to their own gallery only
+- Authenticated users can post comments on any picture of any gallery
+- Authenticated users can delete any one of their own comments but not others
+- Gallery owners can delete any comment on any picture from their own gallery
+
+While refactoring your application, you should redesign your REST API to reflect the fact that image galleries are owned by users.
+
+## Frontend SPA Update (up to 20 points)
+
+This part of the assignment builds on top of what you have already built for assignment 2.
+Update your current frontend to reflect all changes made above. The homepage should now a paginated list of all galleries that can be browsed.
+
+You may choose to:
+
+- Create separate HTML pages for `index.html`, `login.html`, and `credits.html` (max 15 points)
+- Create a true single page application (SPA) with javascript loading all pages. (max 20 points)
+
+> [!NOTE]
+> If the user does not have access to an action, the action buttons should be hidden or disabled
+> accordingly.
 
 ## Syllabus
 
-This is a bonus assignment to allow you to make up for any lost points in previous assignments.
+- Feature for multiple galleries [20pts]
+- Authentication & Code Quality [20pts]
+- Authorization & Code Quality [30pts]
+- Frontend SPA Update [20pts]
+- Repository quality and organization [10pts]
 
-You will be graded from a scale of 0-5 points:
-
-- 0 points: No deployment or deployment does not meet the requirements.
-- 1 point: Deployment meets the requirements but the application is not feature complete.
-- 2 points: Deployment meets the requirements and the application has many code quality issues, and/or many bugs.
-- 3 points: Deployment meets the requirements and the application has some code quality issues, and/or a few bugs.
-- 4 points: Deployment meets the requirements and the application has minor code quality issues, and/or minor bugs.
-- 5 points: This is a perfect assignment!
-
-Suitable bonus points will be added to the final grade to the course. You may not exceed 30% through the assignment.
+Total: 100pts

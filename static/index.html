@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Gallery - SPA</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="body-bg">
+    <!-- 헤더 (모든 페이지에서 공통) -->
+    <header class="header">
+      <h1 class="main-title">Web Gallery</h1>
+      <div class="header-quote">
+        <span class="quote-mark">"</span>
+        AI will not replace humans, but humans with AI will replace humans without AI.
+        <span class="quote-mark">"</span>
+      </div>
+      <div class="auth-section">
+        <span id="userInfo" class="user-info hidden">Welcome, <span id="username"></span>!</span>
+        <button id="loginBtn" class="btn">Login</button>
+        <button id="signupBtn" class="btn">Sign Up</button>
+        <button id="logoutBtn" class="btn hidden">Logout</button>
+      </div>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main id="main-content">
+      <!-- 로딩 스피너 -->
+      <div id="loading" class="spinner" style="display: none; margin: 2rem auto"></div>
+
+      <!-- 갤러리 목록 페이지 (기본 페이지) -->
+      <div id="gallery-list-page" class="page active">
+        <div id="gallery-section">
+          <div id="gallery-list" class="gallery-list"></div>
+          <div id="pagination-controls" class="pagination-controls">
+            <button id="prevPage" class="btn">Prev</button>
+            <button id="nextPage" class="btn">Next</button>
+          </div>
+        </div>
+
+        <div id="image-detail" class="image-detail hidden"></div>
+      </div>
+
+      <!-- 로그인 페이지 -->
+      <div id="login-page" class="page">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h2 class="auth-title">Login</h2>
+            <form id="loginForm" class="auth-form">
+              <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" required />
+              </div>
+              <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required />
+              </div>
+              <div class="button-container">
+                <button type="submit" class="btn primary">Login</button>
+              </div>
+            </form>
+            <div class="auth-links">
+              <p>Don't have an account? <a href="#" id="goToSignup">Sign up</a></p>
+              <p><a href="#" id="goToHome">Back to Gallery</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 회원가입 페이지 -->
+      <div id="signup-page" class="page">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h2 class="auth-title">Sign Up</h2>
+            <form id="signupForm" class="auth-form">
+              <div class="form-group">
+                <label for="signupUsername">Username</label>
+                <input type="text" id="signupUsername" required />
+              </div>
+              <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required />
+              </div>
+              <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required />
+              </div>
+              <div class="form-group">
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <input type="password" id="signupConfirmPassword" required />
+              </div>
+              <div class="button-container">
+                <button type="submit" class="btn primary">Sign Up</button>
+              </div>
+            </form>
+            <div class="auth-links">
+              <p>Already have an account? <a href="#" id="goToLogin">Login</a></p>
+              <p><a href="#" id="goToHomeFromSignup">Back to Gallery</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 개별 갤러리 페이지 -->
+      <div id="gallery-page" class="page">
+        <div class="gallery-header">
+          <h2 id="galleryTitle">User Gallery</h2>
+          <p id="galleryOwner">Loading...</p>
+        </div>
+
+        <div class="button-container">
+          <button id="backToGalleries" class="btn">← Back to Galleries</button>
+          <button id="toggleAddFormGallery" class="btn primary hidden">Add Image</button>
+        </div>
+
+        <form id="addImageFormGallery" class="form-container hidden" enctype="multipart/form-data">
+          <h2 class="image-title">Add New Image</h2>
+          <div class="form-group">
+            <label for="imageTitleGallery">Image Title</label>
+            <input type="text" id="imageTitleGallery" required />
+          </div>
+          <div class="form-group">
+            <label for="imageDescriptionGallery">Description (Optional)</label>
+            <textarea
+              id="imageDescriptionGallery"
+              placeholder="Describe your image..."
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="imageFileGallery">Image File</label>
+            <input type="file" id="imageFileGallery" accept="image/*" required />
+          </div>
+          <div class="button-container">
+            <button type="submit" class="btn primary">Add Image</button>
+          </div>
+        </form>
+
+        <div id="image-list" class="image-list"></div>
+        <div id="pagination-controls-gallery" class="pagination-controls">
+          <button id="prevPageGallery" class="btn">Prev</button>
+          <button id="nextPageGallery" class="btn">Next</button>
+        </div>
+
+        <div id="image-detail-gallery" class="image-detail hidden"></div>
+      </div>
+
+      <!-- 크레딧 페이지 -->
+      <div id="credits-page" class="page">
+        <section>
+          <h2>Image Sources</h2>
+          <ul>
+            <li>All gallery images are user-provided via URL input.</li>
+            <li>
+              Sample image:
+              <a
+                href="https://i.guim.co.uk/img/media/fd844c04b9bbd2a2c11efb3fc4b7091dadc646b2/0_291_5471_3283/master/5471.jpg?width=465&dpr=1&s=none&crop=none"
+                target="_blank"
+                >tesla</a
+              >
+            </li>
+            <li>
+              Sample image:
+              <a href="https://m.media-amazon.com/images/I/31epF-8N9LL.png" target="_blank"
+                >Amazon</a
+              >
+            </li>
+            <li>
+              Sample image:
+              <a
+                href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Colliers_logo.svg/1200px-Colliers_logo.svg.png"
+                target="_blank"
+                >Colliers</a
+              >
+            </li>
+            <li>
+              Sample image:
+              <a
+                href="https://play-lh.googleusercontent.com/1-hPxafOxdYpYZEOKzNIkSP43HXCNftVJVttoo4ucl7rsMASXW3Xr6GlXURCubE1tA=w3840-h2160-rw"
+                target="_blank"
+                >Google (it has limit of viewing, you can try exact same picture in google
+                images)</a
+              >
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Icons & Buttons</h2>
+          <ul>
+            <li>
+              All icons and buttons are custom styled using pure CSS. No external icon libraries
+              were used.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Code Snippets</h2>
+          <ul>
+            <li>All JavaScript and CSS code was written from scratch for this assignment.</li>
+            <li>
+              Unique ID generation inspired by:
+              <a href="https://stackoverflow.com/a/2117523" target="_blank"
+                >StackOverflow: Generate random UUID</a
+              >
+            </li>
+            <li>
+              CSS Media Queries reference:
+              <a href="https://www.w3schools.com/css/css3_mediaqueries.asp" target="_blank"
+                >W3Schools CSS Media Queries</a
+              >
+            </li>
+            <li>
+              HTML Responsive reference:
+              <a href="https://www.w3schools.com/html/html_responsive.asp" target="_blank"
+                >W3Schools HTML Responsive</a
+              >
+            </li>
+            <li>Copilot: For helping with starter HTML, fixing errors, and debugging.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Other Resources</h2>
+          <ul>
+            <li>Design inspiration: Instagram, Facebook, Google Photos</li>
+            <li>
+              CSS animation reference:
+              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation" target="_blank"
+                >MDN Web Docs - CSS animation</a
+              >
+            </li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+      <a class="footer-link" href="#" id="goToCredits">Credits</a>
+    </footer>
+
+    <!-- JavaScript 파일들 -->
+    <script src="js/meact.js"></script>
+    <script src="js/api-service.js"></script>
+    <script src="js/spa.js"></script>
+    <script>
+      console.log("SPA JS LOADED");
+    </script>
+  </body>
+</html>
