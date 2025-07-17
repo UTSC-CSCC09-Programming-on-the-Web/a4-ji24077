@@ -1,5 +1,11 @@
 # Web Gallery: Managing Users
 
+## Live Demo
+
+🌐 **Application URL**: https://jiwebgallery.website
+
+> You can test all features in the live deployed application.
+
 The objective of these assignments is to build an application called _The Web Gallery_ where users can share pictures and comments. This application is similar to existing web applications such as Facebook, Instagram or Google Photos.
 
 In this last assignment, you will concentrate on user authentication, and authorization.
